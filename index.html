@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abdur S — DevOps &amp; Cloud Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0C121A;
+    --bg-elev:#131B26;
+    --bg-elev-2:#182230;
+    --amber:#F5A623;
+    --cyan:#4FD1C5;
+    --coral:#FF6B5B;
+    --text:#E8ECF1;
+    --muted:#7C8797;
+    --line:rgba(232,236,241,0.09);
+    --mono:'JetBrains Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    overflow-x:hidden;
+    line-height:1.5;
+  }
+  ::selection{background:var(--amber); color:#0C121A;}
+
+  /* ---------- Rail (signature element) ---------- */
+  .rail{ position:fixed; top:0; bottom:0; left:calc(50% - 1px); width:2px; background:var(--line); z-index:5; pointer-events:none; }
+  .rail-fill{ width:100%; height:0%; background:linear-gradient(180deg, var(--cyan), var(--amber)); box-shadow:0 0 12px var(--cyan); }
+  .rail-dot{ position:fixed; left:calc(50% - 5px); width:10px; height:10px; border-radius:50%; background:var(--amber); box-shadow:0 0 14px 4px rgba(245,166,35,0.6); z-index:6; top:0; transition:top 0.05s linear; }
+  @media (max-width:860px){ .rail, .rail-dot{ left:14px; width:2px; } .rail-dot{ width:8px; height:8px; left:11px; } }
+
+  /* ---------- Nav ---------- */
+  nav{ position:fixed; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:22px 5vw; z-index:10; font-family:var(--mono); font-size:13px; letter-spacing:0.03em; background:linear-gradient(180deg, rgba(12,18,26,0.9), rgba(12,18,26,0)); backdrop-filter:blur(2px); }
+  nav .logo{ color:var(--amber); font-weight:600; }
+  nav .logo span{ color:var(--muted); }
+  nav ul{ list-style:none; display:flex; gap:28px; }
+  nav a{ color:var(--muted); text-decoration:none; transition:color .2s ease; }
+  nav a:hover{ color:var(--text); }
+  @media (max-width:640px){ nav ul{ display:none; } }
+
+  section, header.hero{ position:relative; max-width:1180px; margin:0 auto; padding:140px 6vw 40px; z-index:2; perspective:1200px; }
+
+  .eyebrow{ font-family:var(--mono); color:var(--cyan); font-size:13px; letter-spacing:0.08em; margin-bottom:14px; }
+
+  h2{
+    font-family:var(--mono); font-size:clamp(22px, 3vw, 30px); font-weight:600; margin-bottom:48px;
+    display:flex; align-items:center; gap:14px;
+    opacity:0; transform:rotateX(55deg) translateY(24px); transform-origin:bottom center;
+    transition:transform .7s cubic-bezier(.2,.7,.3,1), opacity .7s ease;
+  }
+  h2.in-view{ opacity:1; transform:rotateX(0deg) translateY(0); }
+  h2::after{ content:''; flex:1; height:1px; background:var(--line); }
+
+  /* ---------- Hero ---------- */
+  header.hero{ min-height:100vh; overflow:hidden; padding-top:120px; }
+  .grid-floor{
+    position:absolute; left:-20%; right:-20%; bottom:-10%; height:65%;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:44px 44px;
+    transform:perspective(500px) rotateX(62deg);
+    transform-origin:bottom;
+    opacity:0.55;
+    z-index:0;
+    pointer-events:none;
+  }
+  .hero-inner{
+    display:grid; grid-template-columns:1.1fr 0.9fr; align-items:center; gap:40px;
+    position:relative; z-index:1;
+    transform-style:preserve-3d;
+    will-change:transform, opacity;
+  }
+  .hero-text h1{ font-family:var(--mono); font-size:clamp(40px, 6vw, 72px); font-weight:700; line-height:1.05; margin:6px 0 8px; }
+  .hero-text .role{ color:var(--amber); font-family:var(--mono); font-size:clamp(15px,2vw,18px); margin-bottom:20px; }
+  .hero-sub{ color:var(--muted); font-size:16px; max-width:460px; margin-bottom:34px; }
+  .hero-cta{ display:flex; gap:14px; margin-bottom:36px; flex-wrap:wrap;}
+  .btn, .btn-ghost{ font-family:var(--mono); font-size:13px; padding:13px 22px; border-radius:2px; text-decoration:none; letter-spacing:0.02em; transition:transform .2s ease, background .2s ease, border-color .2s ease; display:inline-block; }
+  .btn{ background:var(--amber); color:#141414; font-weight:600; }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn-ghost{ border:1px solid var(--line); color:var(--text); }
+  .btn-ghost:hover{ border-color:var(--cyan); color:var(--cyan); }
+
+  .terminal-line{ font-family:var(--mono); font-size:14px; color:var(--cyan); background:var(--bg-elev); border:1px solid var(--line); padding:12px 16px; border-radius:4px; max-width:460px; white-space:nowrap; overflow:hidden; }
+  .terminal-line .prompt{ color:var(--amber); margin-right:8px; }
+  .cursor{ animation:blink 1s step-start infinite; color:var(--amber); }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  /* ---------- Hero 3D cube ---------- */
+  .scene{ perspective:900px; height:340px; display:flex; align-items:center; justify-content:center; }
+  .cube-tilt{ width:160px; height:160px; transform-style:preserve-3d; transition:transform .15s ease-out; }
+  .cube{ width:100%; height:100%; position:relative; transform-style:preserve-3d; animation:spin 18s linear infinite; }
+  @keyframes spin{ from{ transform:rotateX(0deg) rotateY(0deg); } to{ transform:rotateX(360deg) rotateY(360deg); } }
+  .face{ position:absolute; width:160px; height:160px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:13px; letter-spacing:0.12em; font-weight:600; background:rgba(19,27,38,0.85); border:1px solid var(--cyan); color:var(--cyan); box-shadow:inset 0 0 30px rgba(79,209,197,0.08); }
+  .face.front{ transform:translateZ(80px); }
+  .face.back{ transform:rotateY(180deg) translateZ(80px); border-color:var(--amber); color:var(--amber); }
+  .face.right{ transform:rotateY(90deg) translateZ(80px); }
+  .face.left{ transform:rotateY(-90deg) translateZ(80px); border-color:var(--amber); color:var(--amber); }
+  .face.top{ transform:rotateX(90deg) translateZ(80px); }
+  .face.bottom{ transform:rotateX(-90deg) translateZ(80px); border-color:var(--coral); color:var(--coral); }
+
+  @media (max-width:860px){ .hero-inner{ grid-template-columns:1fr; } .scene{ height:220px; } }
+
+  /* ---------- Stack / ring ---------- */
+  .stack{ text-align:center; padding-top:100px; }
+  .ring-wrap{ perspective:1200px; height:280px; display:flex; align-items:center; justify-content:center; margin-top:20px; }
+  .ring{ position:relative; width:1px; height:1px; transform-style:preserve-3d; }
+  .chip{ position:absolute; top:-28px; left:-70px; width:140px; height:56px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:13px; letter-spacing:0.04em; background:var(--bg-elev); border:1px solid var(--line); border-radius:4px; color:var(--text); }
+  .chip b{ color:var(--amber); margin-right:6px; font-weight:600;}
+
+  /* ---------- Pipeline / experience timeline ---------- */
+  .pipeline{ padding-top:100px; }
+  .timeline{ display:flex; flex-direction:column; gap:70px; }
+  .tl-item{ position:relative; width:46%; perspective:1000px; }
+  .tl-item[data-side="left"]{ margin-right:auto; text-align:right; }
+  .tl-item[data-side="right"]{ margin-left:auto; }
+  .tl-node{ position:absolute; top:8px; width:12px; height:12px; border-radius:50%; background:var(--bg-elev-2); border:2px solid var(--muted); transition:all .4s ease; z-index:3; }
+  .tl-item[data-side="left"] .tl-node{ right:-8.2%; }
+  .tl-item[data-side="right"] .tl-node{ left:-8.2%; }
+  .tl-item.active .tl-node{ border-color:var(--cyan); background:var(--cyan); box-shadow:0 0 14px 3px rgba(79,209,197,0.5); }
+  .tl-card{ background:var(--bg-elev); border:1px solid var(--line); border-radius:6px; padding:24px 26px; transform:translateY(30px) rotateX(-8deg); opacity:0; transition:transform .6s cubic-bezier(.2,.7,.3,1), opacity .6s ease; transform-origin:top center; }
+  .tl-item.active .tl-card{ transform:translateY(0) rotateX(0deg); opacity:1; }
+  .tl-date{ font-family:var(--mono); color:var(--amber); font-size:12px; margin-bottom:8px; letter-spacing:0.06em;}
+  .tl-card h3{ font-size:18px; margin-bottom:4px; }
+  .tl-card .tl-role{ color:var(--muted); font-size:13px; margin-bottom:12px; font-family:var(--mono);}
+  .tl-card p{ color:#c7cdd6; font-size:14px; }
+  @media (max-width:760px){
+    .tl-item, .tl-item[data-side="left"], .tl-item[data-side="right"]{ width:100%; margin:0; text-align:left; }
+    .tl-item[data-side="left"] .tl-node, .tl-item[data-side="right"] .tl-node{ left:-30px; right:auto; }
+  }
+
+  /* ---------- Projects ---------- */
+  .work{ padding-top:100px; }
+  .project-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:26px; }
+  .project-card{ perspective:1000px; }
+  .tilt-inner{
+    background:var(--bg-elev); border:1px solid var(--line); border-radius:8px; padding:28px;
+    height:100%;
+    transform-style:preserve-3d;
+    opacity:0;
+    transform:rotateY(-65deg) translateZ(-40px);
+    transition:transform .7s cubic-bezier(.2,.7,.3,1), opacity .7s ease, border-color .3s ease;
+    will-change:transform;
+  }
+  .project-card.in-view .tilt-inner{ opacity:1; transform:rotateY(0deg) translateZ(0px); }
+  .project-card.tilt-ready .tilt-inner{ transition:transform .12s ease-out, border-color .3s ease; }
+  .tilt-inner:hover{ border-color:var(--cyan); }
+  .project-tag{ font-family:var(--mono); font-size:11px; color:var(--coral); letter-spacing:0.08em; margin-bottom:14px; }
+  .tilt-inner h3{ font-size:19px; margin-bottom:10px; }
+  .tilt-inner p{ color:var(--muted); font-size:14px; margin-bottom:18px; }
+  .stack-list{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+  .stack-list span{ font-family:var(--mono); font-size:11px; padding:5px 9px; border:1px solid var(--line); border-radius:3px; color:var(--cyan); }
+  .project-link{ font-family:var(--mono); font-size:12px; color:var(--amber); text-decoration:none; border-bottom:1px dashed var(--amber); }
+  .project-link.pending{ color:var(--muted); border-bottom:1px dashed var(--muted); cursor:default; }
+
+  /* ---------- Contact / footer ---------- */
+  .contact{ text-align:center; padding:160px 6vw 100px; }
+  .contact .eyebrow{ justify-content:center; display:flex; }
+  .contact h2{ justify-content:center; }
+  .contact h2::after{ display:none; }
+  .contact-line{ font-family:var(--mono); font-size:clamp(18px,3vw,26px); margin-bottom:26px; }
+  .contact-line a{ color:var(--amber); text-decoration:none; border-bottom:1px dashed var(--amber);}
+  .socials{ display:flex; gap:22px; justify-content:center; font-family:var(--mono); font-size:13px;}
+  .socials a{ color:var(--muted); text-decoration:none; }
+  .socials a:hover{ color:var(--text); }
+  footer.foot{ text-align:center; color:var(--muted); font-family:var(--mono); font-size:11px; padding:30px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+    html{ scroll-behavior:auto; }
+    h2, .tilt-inner{ opacity:1 !important; transform:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="rail"><div class="rail-fill" id="railFill"></div></div>
+<div class="rail-dot" id="railDot"></div>
+
+<nav>
+  <div class="logo">abdur<span>.s</span></div>
+  <ul>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#pipeline">Experience</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <div class="grid-floor" id="gridFloor"></div>
+  <div class="hero-inner" id="heroInner">
+    <div class="hero-text">
+      <p class="eyebrow">$ whoami</p>
+      <h1>Abdur S</h1>
+      <p class="role">AWS DevOps Engineer — Fresher</p>
+      <p class="hero-sub">Hands-on with CI/CD pipelines, cloud infrastructure, Terraform, VPC design, and container deployments. Skilled in Jenkins, Docker, and Kubernetes, and building high-availability architectures on AWS. Looking for an entry-level DevOps role to put automation-first thinking to work.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#work">View projects</a>
+        <a class="btn-ghost" href="#contact">Get in touch</a>
+      </div>
+      <div class="terminal-line"><span class="prompt">$</span><span id="typedText"></span><span class="cursor">▋</span></div>
+    </div>
+    <div class="hero-3d">
+      <div class="scene">
+        <div class="cube-tilt" id="cubeTilt">
+          <div class="cube">
+            <div class="face front">BUILD</div>
+            <div class="face back">SCALE</div>
+            <div class="face right">TEST</div>
+            <div class="face left">SECURE</div>
+            <div class="face top">DEPLOY</div>
+            <div class="face bottom">MONITOR</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="stack" id="stack">
+  <h2>The stack</h2>
+  <div class="ring-wrap">
+    <div class="ring" id="ring"></div>
+  </div>
+</section>
+
+<section class="pipeline" id="pipeline">
+  <h2>Hands-on experience</h2>
+  <div class="timeline" id="timeline">
+
+    <div class="tl-item" data-side="left">
+      <div class="tl-node"></div>
+      <div class="tl-card">
+        <div class="tl-date">CI / CD</div>
+        <h3>Automated deployment pipelines</h3>
+        <div class="tl-role">Jenkins · GitHub Actions</div>
+        <p>Built CI/CD pipelines using Jenkins and GitHub Actions for automated deployments on AWS EC2.</p>
+      </div>
+    </div>
+
+    <div class="tl-item" data-side="right">
+      <div class="tl-node"></div>
+      <div class="tl-card">
+        <div class="tl-date">INFRASTRUCTURE AS CODE</div>
+        <h3>Provisioned AWS infrastructure</h3>
+        <div class="tl-role">Terraform</div>
+        <p>Provisioned VPCs, subnets, EC2 instances, and security groups on AWS using Terraform.</p>
+      </div>
+    </div>
+
+    <div class="tl-item" data-side="left">
+      <div class="tl-node"></div>
+      <div class="tl-card">
+        <div class="tl-date">ARCHITECTURE</div>
+        <h3>High-availability three-tier design</h3>
+        <div class="tl-role">ALB · Auto Scaling · Multi-AZ RDS</div>
+        <p>Designed a high-availability three-tier architecture with an Application Load Balancer, Auto Scaling, and Multi-AZ RDS.</p>
+      </div>
+    </div>
+
+    <div class="tl-item" data-side="right">
+      <div class="tl-node"></div>
+      <div class="tl-card">
+        <div class="tl-date">CONTAINERS</div>
+        <h3>Containerized application delivery</h3>
+        <div class="tl-role">Docker · ECS · EKS · ECR</div>
+        <p>Containerized applications using Docker and deployed them on ECS/EKS with images stored in ECR.</p>
+      </div>
+    </div>
+
+    <div class="tl-item" data-side="left">
+      <div class="tl-node"></div>
+      <div class="tl-card">
+        <div class="tl-date">OBSERVABILITY</div>
+        <h3>Monitoring &amp; logging</h3>
+        <div class="tl-role">CloudWatch · Prometheus · Grafana · Splunk</div>
+        <p>Implemented monitoring and logging using CloudWatch, Prometheus, Grafana, and Splunk.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="work" id="work">
+  <h2>Projects</h2>
+  <div class="project-grid">
+
+    <!-- TODO: replace # with your GitHub repo link once published -->
+    <article class="project-card">
+      <div class="tilt-inner">
+        <div class="project-tag">● PROJECT 01</div>
+        <h3>CI/CD Pipeline with Docker &amp; GitHub Actions</h3>
+        <p>A Flask app with a full CI/CD pipeline — every push runs automated tests, builds a Docker image, and pushes it to Docker Hub via GitHub Actions.</p>
+        <div class="stack-list"><span>Docker</span><span>GitHub Actions</span><span>Flask</span><span>Pytest</span></div>
+        <a class="project-link pending" href="#">GitHub link coming soon →</a>
+      </div>
+    </article>
+
+    <!-- TODO: replace # with your GitHub repo link once published -->
+    <article class="project-card">
+      <div class="tilt-inner">
+        <div class="project-tag">● PROJECT 02</div>
+        <h3>AWS Infrastructure as Code with Terraform</h3>
+        <p>Provisions a VPC, public subnet, internet gateway, security group, and EC2 web server on AWS — fully automated with reusable Terraform modules.</p>
+        <div class="stack-list"><span>Terraform</span><span>AWS VPC</span><span>EC2</span><span>IAM</span></div>
+        <a class="project-link pending" href="#">GitHub link coming soon →</a>
+      </div>
+    </article>
+
+    <!-- TODO: replace # with your GitHub repo link once published -->
+    <article class="project-card">
+      <div class="tilt-inner">
+        <div class="project-tag">● PROJECT 03</div>
+        <h3>Dockerized Microservices on Kubernetes with Helm</h3>
+        <p>Two Flask microservices deployed to Kubernetes with both raw manifests and a Helm chart, demonstrating service-to-service communication inside a cluster.</p>
+        <div class="stack-list"><span>Docker</span><span>Kubernetes</span><span>Helm</span><span>Flask</span></div>
+        <a class="project-link pending" href="#">GitHub link coming soon →</a>
+      </div>
+    </article>
+
+    <!-- TODO: replace # with your GitHub repo link once published -->
+    <article class="project-card">
+      <div class="tilt-inner">
+        <div class="project-tag">● PROJECT 04</div>
+        <h3>AIOps — ML-Based Log/Metric Anomaly Detection</h3>
+        <p>Uses an Isolation Forest model to automatically flag abnormal CPU, latency, and error-rate patterns instead of relying on static alert thresholds, with results served through a Flask API.</p>
+        <div class="stack-list"><span>Python</span><span>Scikit-learn</span><span>Flask</span><span>Pandas</span></div>
+        <a class="project-link pending" href="#">GitHub link coming soon →</a>
+      </div>
+    </article>
+
+    <!-- TODO: replace # with your GitHub repo link once published -->
+    <article class="project-card">
+      <div class="tilt-inner">
+        <div class="project-tag">● PROJECT 05</div>
+        <h3>Production-Grade Kubernetes Deployment on EKS</h3>
+        <p>End-to-end pipeline for a containerized service on Amazon EKS — a Terraform-provisioned cluster, a Helm chart with autoscaling and network policies, and a GitHub Actions pipeline promoting dev → staging → prod.</p>
+        <div class="stack-list"><span>AWS EKS</span><span>Terraform</span><span>Helm</span><span>GitHub Actions</span></div>
+        <a class="project-link pending" href="#">GitHub link coming soon →</a>
+      </div>
+    </article>
+
+    <article class="project-card">
+      <div class="tilt-inner">
+        <div class="project-tag">● PROJECT 06</div>
+        <h3>DevSecOps Pipeline — Tic Tac Toe</h3>
+        <p>A React/TypeScript game wrapped in a full DevSecOps pipeline: unit tests, SAST linting, Docker build, Trivy vulnerability scan, push to GHCR, and ArgoCD GitOps deployment to Kubernetes.</p>
+        <div class="stack-list"><span>React</span><span>TypeScript</span><span>Docker</span><span>Trivy</span><span>ArgoCD</span></div>
+        <a class="project-link" href="https://github.com/Abdur-S/DevSecOps-TicTacToe-Project" target="_blank" rel="noopener">View on GitHub →</a>
+      </div>
+    </article>
+
+    <article class="project-card">
+      <div class="tilt-inner">
+        <div class="project-tag">● PROJECT 07</div>
+        <h3>VPC Infrastructure with Terraform &amp; GitHub Actions CI/CD</h3>
+        <p>A modular Terraform build of a highly-available AWS VPC — multi-AZ subnets, security groups, and load-balanced EC2 instances — deployed through a GitHub Actions pipeline.</p>
+        <div class="stack-list"><span>Terraform</span><span>AWS VPC</span><span>ALB</span><span>GitHub Actions</span></div>
+        <a class="project-link" href="https://github.com/Abdur-S/vpc-terraform-github-actions" target="_blank" rel="noopener">View on GitHub →</a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<footer class="contact" id="contact">
+  <p class="eyebrow">$ ssh abdur@available-for-hire</p>
+  <h2>Let's ship something</h2>
+  <p class="contact-line"><a href="mailto:you@example.com">you@example.com</a></p>
+  <div class="socials">
+    <a href="https://github.com/Abdur-S" target="_blank" rel="noopener">GitHub</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Resume</a>
+  </div>
+</footer>
+<footer class="foot">Built with HTML, CSS 3D transforms, and no framework.</footer>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Scroll rail progress + hero recede + grid floor ---- */
+  var railFill = document.getElementById('railFill');
+  var railDot = document.getElementById('railDot');
+  var heroInner = document.getElementById('heroInner');
+  var gridFloor = document.getElementById('gridFloor');
+
+  function onScroll(){
+    var doc = document.documentElement;
+    var scrollTop = doc.scrollTop || document.body.scrollTop;
+    var scrollHeight = doc.scrollHeight - doc.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    railFill.style.height = pct + '%';
+    railDot.style.top = pct + '%';
+
+    if(!reduceMotion){
+      var heroFade = Math.max(0, 1 - scrollTop / 600);
+      var depth = Math.min(scrollTop * 0.6, 400);
+      heroInner.style.opacity = heroFade;
+      heroInner.style.transform = 'translateZ(-' + depth + 'px) scale(' + (1 - Math.min(scrollTop/2200, 0.15)) + ')';
+      gridFloor.style.backgroundPosition = '0px ' + (scrollTop * 0.5) + 'px';
+    }
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ---- Hero cube mouse tilt ---- */
+  var cubeTilt = document.getElementById('cubeTilt');
+  if(!reduceMotion && cubeTilt){
+    document.querySelector('.hero-3d').addEventListener('mousemove', function(e){
+      var r = this.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      cubeTilt.style.transform = 'rotateY(' + (x*30) + 'deg) rotateX(' + (-y*30) + 'deg)';
+    });
+    document.querySelector('.hero-3d').addEventListener('mouseleave', function(){
+      cubeTilt.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    });
+  }
+
+  /* ---- Typewriter ---- */
+  var lines = [
+    'terraform apply -auto-approve',
+    'kubectl rollout status deploy/api',
+    'docker build -t app:latest .',
+    'argocd app sync production'
+  ];
+  var typedEl = document.getElementById('typedText');
+  var li = 0, ci = 0, deleting = false;
+  function type(){
+    var current = lines[li];
+    if(!deleting){
+      typedEl.textContent = current.slice(0, ci+1);
+      ci++;
+      if(ci === current.length){ deleting = true; setTimeout(type, 1400); return; }
+    } else {
+      typedEl.textContent = current.slice(0, ci-1);
+      ci--;
+      if(ci === 0){ deleting = false; li = (li+1) % lines.length; }
+    }
+    setTimeout(type, deleting ? 35 : 55);
+  }
+  if(!reduceMotion){ type(); } else { typedEl.textContent = lines[0]; }
+
+  /* ---- Skill ring (3D carousel, auto-rotate + scroll nudge) ---- */
+  var skills = ['AWS EC2','VPC','IAM','LAMBDA','EKS','JENKINS','DOCKER','TERRAFORM','ANSIBLE','KUBERNETES','PROMETHEUS','GRAFANA'];
+  var ring = document.getElementById('ring');
+  var n = skills.length;
+  var radius = 230;
+  skills.forEach(function(name, i){
+    var chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.innerHTML = '<b>▸</b>' + name;
+    var angle = (360 / n) * i;
+    chip.style.transform = 'rotateY(' + angle + 'deg) translateZ(' + radius + 'px)';
+    ring.appendChild(chip);
+  });
+  var ringAngle = 0;
+  var ringSection = document.getElementById('stack');
+  var ringInView = false;
+  var lastScrollY = window.scrollY;
+  var io0 = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ ringInView = e.isIntersecting; });
+  }, {threshold:0.15});
+  io0.observe(ringSection);
+  function rotateRing(){
+    if(!reduceMotion && ringInView){
+      var dy = window.scrollY - lastScrollY;
+      ringAngle += 0.18 + dy * 0.15;
+      ring.style.transform = 'rotateY(' + ringAngle + 'deg)';
+    }
+    lastScrollY = window.scrollY;
+    requestAnimationFrame(rotateRing);
+  }
+  if(!reduceMotion){ rotateRing(); } else { ring.style.transform = 'rotateY(0deg)'; }
+
+  /* ---- Section heading 3D reveal ---- */
+  var headings = document.querySelectorAll('h2');
+  var ioH = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in-view'); } });
+  }, {threshold:0.4});
+  headings.forEach(function(h){ ioH.observe(h); });
+
+  /* ---- Timeline reveal ---- */
+  var tlItems = document.querySelectorAll('.tl-item');
+  var io1 = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('active'); } });
+  }, {threshold:0.3});
+  tlItems.forEach(function(item){ io1.observe(item); });
+
+  /* ---- Project card 3D flip-in reveal + mouse tilt ---- */
+  var cards = document.querySelectorAll('.project-card');
+  var io2 = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('in-view');
+        var inner = e.target.querySelector('.tilt-inner');
+        inner.addEventListener('transitionend', function handler(){
+          e.target.classList.add('tilt-ready');
+          inner.removeEventListener('transitionend', handler);
+        });
+      }
+    });
+  }, {threshold:0.2});
+  cards.forEach(function(card, i){
+    card.querySelector('.tilt-inner').style.transitionDelay = reduceMotion ? '0s' : (i % 3) * 0.08 + 's';
+    io2.observe(card);
+  });
+
+  if(!reduceMotion){
+    cards.forEach(function(card){
+      var inner = card.querySelector('.tilt-inner');
+      card.addEventListener('mousemove', function(e){
+        if(!card.classList.contains('tilt-ready')) return;
+        var r = card.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5;
+        var y = (e.clientY - r.top) / r.height - 0.5;
+        inner.style.transform = 'rotateY(' + (x*12) + 'deg) rotateX(' + (-y*12) + 'deg) translateZ(6px)';
+      });
+      card.addEventListener('mouseleave', function(){
+        if(!card.classList.contains('tilt-ready')) return;
+        inner.style.transform = 'rotateY(0deg) rotateX(0deg) translateZ(0px)';
+      });
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
