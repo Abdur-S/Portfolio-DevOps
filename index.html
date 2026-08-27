@@ -32,9 +32,15 @@
   ::selection{background:var(--amber); color:#0C121A;}
 
   /* ---------- Rail (signature element) ---------- */
-  .rail{ position:fixed; top:0; bottom:0; left:calc(50% - 1px); width:2px; background:var(--line); z-index:5; pointer-events:none; }
+  .rail{ position:fixed; top:0; bottom:0; left:calc(50% - 1px); width:2px; background:var(--line); z-index:1; pointer-events:none; overflow:visible; }
   .rail-fill{ width:100%; height:0%; background:linear-gradient(180deg, var(--cyan), var(--amber)); box-shadow:0 0 12px var(--cyan); }
-  .rail-dot{ position:fixed; left:calc(50% - 5px); width:10px; height:10px; border-radius:50%; background:var(--amber); box-shadow:0 0 14px 4px rgba(245,166,35,0.6); z-index:6; top:0; transition:top 0.05s linear; }
+  .rail-dot{ position:fixed; left:calc(50% - 5px); width:10px; height:10px; border-radius:50%; background:var(--amber); box-shadow:0 0 14px 4px rgba(245,166,35,0.6); z-index:1; top:0; transition:top 0.05s linear; }
+  .rail-pulse{ position:absolute; left:50%; top:-24px; width:7px; height:7px; margin-left:-3.5px; border-radius:50%; background:var(--cyan); box-shadow:0 0 10px 3px rgba(79,209,197,0.7); animation:railFlow 4.2s linear infinite; }
+  .rail-pulse:nth-child(2){ animation-delay:0.9s; background:var(--amber); box-shadow:0 0 10px 3px rgba(245,166,35,0.7); }
+  .rail-pulse:nth-child(3){ animation-delay:1.8s; }
+  .rail-pulse:nth-child(4){ animation-delay:2.7s; background:var(--coral); box-shadow:0 0 10px 3px rgba(255,107,91,0.65); }
+  .rail-pulse:nth-child(5){ animation-delay:3.4s; background:var(--amber); box-shadow:0 0 10px 3px rgba(245,166,35,0.7); }
+  @keyframes railFlow{ 0%{ top:-24px; opacity:0; } 8%{ opacity:1; } 92%{ opacity:1; } 100%{ top:100%; opacity:0; } }
   @media (max-width:860px){ .rail, .rail-dot{ left:14px; width:2px; } .rail-dot{ width:8px; height:8px; left:11px; } }
 
   /* ---------- Nav ---------- */
@@ -44,9 +50,11 @@
   nav ul{ list-style:none; display:flex; gap:28px; }
   nav a{ color:var(--muted); text-decoration:none; transition:color .2s ease; }
   nav a:hover{ color:var(--text); }
-  @media (max-width:640px){ nav ul{ display:none; } }
+  @media (max-width:640px){ nav{ padding:16px 5vw; } nav ul{ gap:12px; font-size:10.5px; } nav .logo{ font-size:12px; } }
+  @media (max-width:400px){ nav ul li:nth-child(3){ display:none; } }
 
   section, header.hero{ position:relative; max-width:1180px; margin:0 auto; padding:140px 6vw 40px; z-index:2; perspective:1200px; }
+  @media (max-width:640px){ section, header.hero{ padding:110px 6vw 30px; } h2{ margin-bottom:34px; } }
 
   .eyebrow{ font-family:var(--mono); color:var(--cyan); font-size:13px; letter-spacing:0.08em; margin-bottom:14px; }
 
@@ -81,7 +89,8 @@
   }
   .hero-text h1{ font-family:var(--mono); font-size:clamp(40px, 6vw, 72px); font-weight:700; line-height:1.05; margin:6px 0 8px; }
   .hero-text .role{ color:var(--amber); font-family:var(--mono); font-size:clamp(15px,2vw,18px); margin-bottom:20px; }
-  .hero-sub{ color:var(--muted); font-size:16px; max-width:460px; margin-bottom:34px; }
+  .hero-sub{ color:var(--muted); font-size:16px; max-width:460px; margin-bottom:22px; }
+  .hero-punch{ font-family:var(--mono); font-size:16px; color:var(--amber); border-left:3px solid var(--cyan); padding:4px 0 4px 14px; max-width:460px; margin-bottom:30px; }
   .hero-cta{ display:flex; gap:14px; margin-bottom:36px; flex-wrap:wrap;}
   .btn, .btn-ghost{ font-family:var(--mono); font-size:13px; padding:13px 22px; border-radius:2px; text-decoration:none; letter-spacing:0.02em; transition:transform .2s ease, background .2s ease, border-color .2s ease; display:inline-block; }
   .btn{ background:var(--amber); color:#141414; font-weight:600; }
@@ -89,7 +98,8 @@
   .btn-ghost{ border:1px solid var(--line); color:var(--text); }
   .btn-ghost:hover{ border-color:var(--cyan); color:var(--cyan); }
 
-  .terminal-line{ font-family:var(--mono); font-size:14px; color:var(--cyan); background:var(--bg-elev); border:1px solid var(--line); padding:12px 16px; border-radius:4px; max-width:460px; white-space:nowrap; overflow:hidden; }
+  .terminal-line{ font-family:var(--mono); font-size:14px; color:var(--cyan); background:var(--bg-elev); border:1px solid var(--line); padding:12px 16px; border-radius:4px; max-width:460px; width:100%; white-space:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  @media (max-width:480px){ .terminal-line{ font-size:12px; padding:10px 12px; } }
   .terminal-line .prompt{ color:var(--amber); margin-right:8px; }
   .cursor{ animation:blink 1s step-start infinite; color:var(--amber); }
   @keyframes blink{ 50%{ opacity:0; } }
@@ -109,14 +119,22 @@
 
   @media (max-width:860px){ .hero-inner{ grid-template-columns:1fr; } .scene{ height:220px; } }
 
-  /* ---------- Stack / ring ---------- */
-  .stack{ text-align:center; padding-top:100px; }
-  .ring-wrap{ perspective:1200px; height:280px; display:flex; align-items:center; justify-content:center; margin-top:20px; }
-  .ring{ position:relative; width:1px; height:1px; transform-style:preserve-3d; }
-  .chip{ position:absolute; top:-28px; left:-78px; width:156px; height:56px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:12px; letter-spacing:0.03em; background:var(--bg-elev); border:1px solid var(--line); border-radius:4px; color:var(--text); text-align:center; padding:0 6px; }
-  .chip b{ color:var(--amber); margin-right:6px; font-weight:600;}
+  /* ---------- Pitch / why-hire-me ---------- */
+  .pitch{ padding-top:60px; }
+  .pitch-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:22px; }
+  .pitch-item{ background:var(--bg-elev); border:1px solid var(--line); border-radius:8px; padding:26px 24px; transition:border-color .3s ease, transform .3s ease; }
+  .pitch-item:hover{ border-color:var(--amber); transform:translateY(-4px); }
+  .pitch-icon{ font-size:22px; margin-bottom:14px; }
+  .pitch-item h3{ font-size:16px; margin-bottom:8px; }
+  .pitch-item p{ color:var(--muted); font-size:13.5px; line-height:1.6; }
 
-  .skills-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:20px; margin-top:60px; text-align:left; }
+  /* ---------- Stack / 3D skills cloud ---------- */
+  .stack{ text-align:center; padding-top:100px; }
+  .skills-visual{ position:relative; height:380px; border-radius:8px; overflow:hidden; border:1px solid var(--line); background:radial-gradient(circle at 50% 50%, rgba(245,166,35,0.08), transparent 70%); margin-top:20px; }
+  .skills-visual canvas{ width:100%; height:100%; display:block; }
+  @media (max-width:640px){ .skills-visual{ height:280px; } }
+
+  .skills-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:20px; margin-top:40px; text-align:left; }
   .skill-group{ background:var(--bg-elev); border:1px solid var(--line); border-radius:6px; padding:18px 20px; }
   .skill-cat{ font-family:var(--mono); font-size:12px; color:var(--amber); letter-spacing:0.06em; margin-bottom:8px; }
   .skill-group p{ color:#c7cdd6; font-size:13.5px; line-height:1.6; }
@@ -186,7 +204,6 @@
   .socials{ display:flex; gap:22px; justify-content:center; font-family:var(--mono); font-size:13px;}
   .socials a{ color:var(--muted); text-decoration:none; }
   .socials a:hover{ color:var(--text); }
-  footer.foot{ text-align:center; color:var(--muted); font-family:var(--mono); font-size:11px; padding:30px; }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation:none !important; transition:none !important; }
@@ -197,7 +214,7 @@
 </head>
 <body>
 
-<div class="rail"><div class="rail-fill" id="railFill"></div></div>
+<div class="rail"><div class="rail-fill" id="railFill"></div><div class="rail-pulse"></div><div class="rail-pulse"></div><div class="rail-pulse"></div><div class="rail-pulse"></div><div class="rail-pulse"></div></div>
 <div class="rail-dot" id="railDot"></div>
 
 <nav>
@@ -217,7 +234,8 @@
       <p class="eyebrow">$ whoami</p>
       <h1>Abdur S</h1>
       <p class="role">AWS DevOps Engineer — Fresher</p>
-      <p class="hero-sub">Hands-on with CI/CD pipelines, cloud infrastructure, Terraform, VPC design, and container deployments. Skilled in Jenkins, Docker, and Kubernetes, and building high-availability architectures on AWS. Looking for an entry-level DevOps role to put automation-first thinking to work.</p>
+      <p class="hero-sub">Hands-on with CI/CD pipelines, cloud infrastructure, Terraform, VPC design, and container deployments. Skilled in Jenkins, Docker, and Kubernetes, and building high-availability architectures on AWS.</p>
+      <p class="hero-punch">Give me a repo, and I'll give you a pipeline.</p>
       <div class="hero-cta">
         <a class="btn" href="#work">View projects</a>
         <a class="btn-ghost" href="#contact">Get in touch</a>
@@ -241,10 +259,35 @@
   </div>
 </header>
 
+<section class="pitch" id="pitch">
+  <div class="pitch-grid">
+    <div class="pitch-item">
+      <div class="pitch-icon">⚡</div>
+      <h3>Ship it, don't sweat it</h3>
+      <p>CI/CD pipelines with Jenkins &amp; GitHub Actions turn a git push into a live deploy — no manual steps, no late-night rollbacks.</p>
+    </div>
+    <div class="pitch-item">
+      <div class="pitch-icon">🏗</div>
+      <h3>Infrastructure that scales itself</h3>
+      <p>Terraform-defined VPCs and high-availability, multi-AZ architecture with Auto Scaling and load balancing, built in from day one.</p>
+    </div>
+    <div class="pitch-item">
+      <div class="pitch-icon">📦</div>
+      <h3>Zero to production, containerized</h3>
+      <p>Docker images built and shipped to ECS/EKS through ECR — clean, reproducible deployments every time.</p>
+    </div>
+    <div class="pitch-item">
+      <div class="pitch-icon">📡</div>
+      <h3>If it breaks, I already know</h3>
+      <p>CloudWatch, Prometheus, and Grafana wired in from the start, so problems get caught before they page anyone.</p>
+    </div>
+  </div>
+</section>
+
 <section class="stack" id="stack">
   <h2>The stack</h2>
-  <div class="ring-wrap">
-    <div class="ring" id="ring"></div>
+  <div class="skills-visual">
+    <canvas id="skillsCanvas"></canvas>
   </div>
   <div class="skills-grid">
     <div class="skill-group">
@@ -432,7 +475,6 @@
     <a href="#">Resume</a>
   </div>
 </footer>
-<footer class="foot">Built with HTML, CSS 3D transforms, and a touch of WebGL.</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -502,7 +544,7 @@
   }
   if(!reduceMotion){ type(); } else { typedEl.textContent = lines[0]; }
 
-  /* ---- Skill ring (3D carousel, auto-rotate + scroll nudge) ---- */
+  /* ---- Skills 3D cloud (real WebGL, via Three.js) ---- */
   var skills = [
     'EC2','S3','IAM','VPC','ELB','AUTO SCALING','RDS','EBS','CLOUDWATCH','LAMBDA','ROUTE 53','DYNAMODB','EKS','ECS','ECR',
     'JENKINS','DOCKER','ANSIBLE',
@@ -512,35 +554,110 @@
     'LINUX','BASH','PYTHON',
     'GIT','GITHUB'
   ];
-  var ring = document.getElementById('ring');
-  var n = skills.length;
-  var radius = 270;
-  skills.forEach(function(name, i){
-    var chip = document.createElement('div');
-    chip.className = 'chip';
-    chip.innerHTML = '<b>▸</b>' + name;
-    var angle = (360 / n) * i;
-    chip.style.transform = 'rotateY(' + angle + 'deg) translateZ(' + radius + 'px)';
-    ring.appendChild(chip);
-  });
-  var ringAngle = 0;
-  var ringSection = document.getElementById('stack');
-  var ringInView = false;
-  var lastScrollY = window.scrollY;
-  var io0 = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){ ringInView = e.isIntersecting; });
-  }, {threshold:0.15});
-  io0.observe(ringSection);
-  function rotateRing(){
-    if(!reduceMotion && ringInView){
-      var dy = window.scrollY - lastScrollY;
-      ringAngle += 0.18 + dy * 0.15;
-      ring.style.transform = 'rotateY(' + ringAngle + 'deg)';
-    }
-    lastScrollY = window.scrollY;
-    requestAnimationFrame(rotateRing);
+  function makeSkillSprite(text){
+    var fontPx = 30;
+    var padX = 22, padY = 14;
+    var tmp = document.createElement('canvas').getContext('2d');
+    tmp.font = fontPx + 'px "JetBrains Mono", monospace';
+    var textW = tmp.measureText(text).width;
+    var canvas = document.createElement('canvas');
+    canvas.width = Math.ceil(textW + padX * 2);
+    canvas.height = fontPx + padY * 2;
+    var ctx = canvas.getContext('2d');
+    var r = 10;
+    ctx.fillStyle = 'rgba(19,27,38,0.92)';
+    ctx.strokeStyle = 'rgba(79,209,197,0.55)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(r,0);
+    ctx.arcTo(canvas.width,0,canvas.width,canvas.height,r);
+    ctx.arcTo(canvas.width,canvas.height,0,canvas.height,r);
+    ctx.arcTo(0,canvas.height,0,0,r);
+    ctx.arcTo(0,0,canvas.width,0,r);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#E8ECF1';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.font = fontPx + 'px "JetBrains Mono", monospace';
+    ctx.fillText(text, canvas.width/2, canvas.height/2 + 1);
+    var texture = new THREE.CanvasTexture(canvas);
+    texture.minFilter = THREE.LinearFilter;
+    var material = new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false });
+    var sprite = new THREE.Sprite(material);
+    var scale = 0.017;
+    sprite.scale.set(canvas.width * scale, canvas.height * scale, 1);
+    return sprite;
   }
-  if(!reduceMotion){ rotateRing(); } else { ring.style.transform = 'rotateY(0deg)'; }
+
+  function initSkillsScene(){
+    var canvas = document.getElementById('skillsCanvas');
+    if (!canvas || typeof THREE === 'undefined') return;
+    var wrap = canvas.parentElement;
+    var width = wrap.clientWidth, height = wrap.clientHeight;
+
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(width, height, false);
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+    camera.position.set(0, 0, 8.5);
+
+    var group = new THREE.Group();
+    scene.add(group);
+
+    var n = skills.length;
+    var R = 3.4;
+    var goldenAngle = Math.PI * (3 - Math.sqrt(5));
+    for (var i = 0; i < n; i++){
+      var y = 1 - (i / (n - 1)) * 2;
+      var radiusAtY = Math.sqrt(Math.max(0, 1 - y * y));
+      var theta = goldenAngle * i;
+      var x = Math.cos(theta) * radiusAtY;
+      var z = Math.sin(theta) * radiusAtY;
+      var sprite = makeSkillSprite(skills[i]);
+      sprite.position.set(x * R, y * R, z * R);
+      group.add(sprite);
+    }
+
+    var mouseX = 0, mouseY = 0;
+    wrap.addEventListener('mousemove', function(e){
+      var r = wrap.getBoundingClientRect();
+      mouseX = (e.clientX - r.left) / r.width - 0.5;
+      mouseY = (e.clientY - r.top) / r.height - 0.5;
+    });
+
+    var visible = true;
+    var ioSkills = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ visible = e.isIntersecting; });
+    }, { threshold: 0.1 });
+    ioSkills.observe(wrap);
+
+    var lastScroll = window.scrollY;
+    function animate(){
+      if (visible) {
+        if (!reduceMotion) {
+          var dy = window.scrollY - lastScroll;
+          group.rotation.y += 0.0025 + mouseX * 0.002 + dy * 0.0006;
+          group.rotation.x += (mouseY * 0.25 - group.rotation.x) * 0.02;
+        }
+        renderer.render(scene, camera);
+      }
+      lastScroll = window.scrollY;
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', function(){
+      var w = wrap.clientWidth, h = wrap.clientHeight;
+      if (w === 0 || h === 0) return;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h, false);
+    });
+  }
 
   /* ---- Section heading 3D reveal ---- */
   var headings = document.querySelectorAll('h2');
@@ -688,6 +805,7 @@
       renderer.setSize(w, h, false);
     });
   }
+  try { initSkillsScene(); } catch(err) { /* WebGL unavailable — the plain skills grid below still lists everything */ }
   try { initAiopsScene(); } catch(err) { /* WebGL unavailable — visual area stays as a quiet gradient */ }
 })();
 </script>
