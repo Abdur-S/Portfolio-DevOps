@@ -10,41 +10,41 @@
 (function(){
   try{
     var t = localStorage.getItem('theme');
-    if(!t){ t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'; }
-    if(t === 'light'){ document.documentElement.setAttribute('data-theme','light'); }
+    if(!t){ t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+    if(t === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
   }catch(e){}
 })();
 </script>
 <style>
   :root{
-    --bg:#0A0E1A;
-    --bg-elev:#111827;
-    --bg-elev-2:#1A2333;
-    --glass:rgba(17,24,39,0.6);
-    --violet:#5B8DEF;
-    --amber:#B8C4D6;
-    --cyan:#7FA8F0;
-    --coral:#E0672E;
-    --text:#E8ECF3;
-    --muted:#7A8699;
-    --line:rgba(232,236,243,0.08);
-    --line-glow:rgba(91,141,239,0.22);
+    --bg:#FFFFFF;
+    --bg-elev:#FAFAF9;
+    --bg-elev-2:#F0F0EE;
+    --glass:rgba(255,255,255,0.75);
+    --violet:#2563EB;
+    --amber:#6B6B68;
+    --cyan:#2563EB;
+    --coral:#C2410C;
+    --text:#111110;
+    --muted:#6B6B68;
+    --line:rgba(17,17,16,0.10);
+    --line-glow:rgba(37,99,235,0.22);
     --mono:'JetBrains Mono', monospace;
     --sans:'Inter', sans-serif;
   }
-  html[data-theme="light"]{
-    --bg:#F4F6FA;
-    --bg-elev:#FFFFFF;
-    --bg-elev-2:#E9EDF3;
-    --glass:rgba(255,255,255,0.65);
-    --violet:#2D5FCC;
-    --amber:#5B6B7F;
-    --cyan:#3A6FD8;
-    --coral:#C2410C;
-    --text:#111827;
-    --muted:#5B6472;
-    --line:rgba(17,24,39,0.10);
-    --line-glow:rgba(45,95,204,0.20);
+  html[data-theme="dark"]{
+    --bg:#0A0A0C;
+    --bg-elev:#141416;
+    --bg-elev-2:#1C1C1F;
+    --glass:rgba(20,20,22,0.6);
+    --violet:#5B8DEF;
+    --amber:#9A9A96;
+    --cyan:#5B8DEF;
+    --coral:#E0672E;
+    --text:#F0EFEC;
+    --muted:#8C8A85;
+    --line:rgba(240,239,236,0.08);
+    --line-glow:rgba(91,141,239,0.22);
   }
   body{ transition:background .35s ease, color .35s ease; }
   *{box-sizing:border-box; margin:0; padding:0;}
@@ -56,14 +56,16 @@
     overflow-x:hidden;
     line-height:1.5;
   }
-  ::selection{background:var(--amber); color:#0A0E1A;}
+  ::selection{background:var(--violet); color:#FFFFFF;}
 
   /* ---------- Rail (signature element) ---------- */
   /* ---------- Ambient full-page 3D field + cursor glow ---------- */
   #ambientCanvas{ position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
   .grain{ position:fixed; inset:0; z-index:0; opacity:0.035; pointer-events:none; mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-  .spotlight{ position:fixed; inset:0; z-index:3; pointer-events:none; mix-blend-mode:screen; opacity:0.5;
+  .spotlight{ position:fixed; inset:0; z-index:3; pointer-events:none; mix-blend-mode:multiply; opacity:0.5;
+    background:radial-gradient(600px circle at var(--sx,50%) var(--sy,50%), rgba(37,99,235,0.06), transparent 60%); }
+  html[data-theme="dark"] .spotlight{ mix-blend-mode:screen;
     background:radial-gradient(600px circle at var(--sx,50%) var(--sy,50%), rgba(91,141,239,0.14), transparent 60%); }
   @media (prefers-reduced-motion: reduce){ #ambientCanvas, .spotlight{ display:none; } }
 
@@ -90,7 +92,7 @@
   @media (max-width:860px){ .rail, .rail-dot{ left:14px; width:2px; } .rail-dot{ width:8px; height:8px; left:11px; } }
 
   /* ---------- Nav ---------- */
-  nav{ position:fixed; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:22px 5vw; z-index:10; font-family:var(--mono); font-size:13px; letter-spacing:0.03em; background:linear-gradient(180deg, rgba(12,18,26,0.9), rgba(12,18,26,0)); backdrop-filter:blur(2px); transition:padding .3s ease, background .3s ease, border-color .3s ease, backdrop-filter .3s ease; border-bottom:1px solid transparent; }
+  nav{ position:fixed; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:22px 5vw; z-index:10; font-family:var(--sans); font-weight:600; font-size:13px; letter-spacing:0.03em; background:linear-gradient(180deg, var(--bg), transparent); backdrop-filter:blur(2px); transition:padding .3s ease, background .3s ease, border-color .3s ease, backdrop-filter .3s ease; border-bottom:1px solid transparent; }
   nav.scrolled{ padding:12px 5vw; background:var(--glass); backdrop-filter:blur(16px); border-bottom:1px solid var(--line); }
   nav .logo{ color:var(--amber); font-weight:600; }
   nav .logo span{ color:var(--muted); }
@@ -117,7 +119,7 @@
   section h2::before{ content:"0" counter(sec) " —"; color:var(--muted); font-size:0.55em; font-weight:400; letter-spacing:0.15em; margin-right:2px; }
 
   h2{
-    font-family:var(--mono); font-size:clamp(22px, 3vw, 30px); font-weight:600; margin-bottom:48px;
+    font-family:var(--sans); font-size:clamp(22px, 3vw, 30px); font-weight:700; margin-bottom:48px; letter-spacing:-0.01em;
     display:flex; align-items:center; gap:14px;
     opacity:0; transform:rotateX(55deg) translateY(24px); transform-origin:bottom center;
     transition:transform .7s cubic-bezier(.2,.7,.3,1), opacity .7s ease;
@@ -145,14 +147,15 @@
     transform-style:preserve-3d;
     will-change:transform, opacity;
   }
-  .hero-text h1{ font-family:var(--mono); font-size:clamp(40px, 6vw, 72px); font-weight:700; line-height:1.05; margin:6px 0 8px; background:linear-gradient(100deg, var(--violet), var(--cyan) 55%, var(--amber)); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  .hero-text .role{ color:var(--amber); font-family:var(--mono); font-size:clamp(15px,2vw,18px); margin-bottom:20px; }
+  .hero-text h1{ font-family:var(--sans); font-size:clamp(40px, 6vw, 76px); font-weight:800; line-height:1.02; margin:6px 0 8px; letter-spacing:-0.02em; color:var(--text); }
+  .hero-text .role{ color:var(--violet); font-family:var(--sans); font-weight:600; font-size:clamp(15px,2vw,18px); margin-bottom:20px; }
   .hero-sub{ color:var(--muted); font-size:16px; max-width:460px; margin-bottom:22px; }
-  .hero-punch{ font-family:var(--mono); font-size:16px; color:var(--amber); border-left:3px solid var(--cyan); padding:4px 0 4px 14px; max-width:460px; margin-bottom:30px; }
+  .hero-punch{ font-family:var(--sans); font-weight:600; font-style:italic; font-size:16px; color:var(--text); border-left:3px solid var(--violet); padding:4px 0 4px 14px; max-width:460px; margin-bottom:30px; }
   .hero-cta{ display:flex; gap:14px; margin-bottom:36px; flex-wrap:wrap;}
-  .btn, .btn-ghost{ font-family:var(--mono); font-size:12.5px; padding:14px 26px; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase; transition:transform .2s ease, background .3s ease, border-color .2s ease, color .3s ease; display:inline-block; border:1px solid var(--amber); color:var(--amber); position:relative; overflow:hidden; }
+  .btn, .btn-ghost{ font-family:var(--sans); font-weight:600; font-size:13px; padding:14px 26px; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase; transition:transform .2s ease, background .3s ease, border-color .2s ease, color .3s ease; display:inline-block; border:1px solid var(--violet); color:var(--violet); position:relative; overflow:hidden; }
   .btn{ background:transparent; font-weight:600; }
-  .btn:hover{ background:var(--amber); color:#0A0E1A; transform:translateY(-2px); }
+  .btn:hover{ background:var(--violet); color:#FFFFFF; transform:translateY(-2px); }
+  html[data-theme="dark"] .btn:hover{ color:#0A0A0C; }
   .btn-ghost{ border-color:var(--line); color:var(--text); }
   .btn-ghost:hover{ border-color:var(--cyan); color:var(--cyan); }
 
@@ -190,7 +193,7 @@
   .pitch-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); perspective:1000px; }
   .pitch-item{ background:var(--bg); padding:34px 26px 28px; transition:background .3s ease, transform .15s ease-out; transform-style:preserve-3d; will-change:transform; border-top:2px solid transparent; }
   .pitch-item:hover{ background:var(--glass); border-top-color:var(--amber); }
-  .pitch-icon{ font-family:var(--mono); font-size:12px; color:var(--muted); letter-spacing:0.1em; margin-bottom:18px; display:block; }
+  .pitch-icon{ font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:0.08em; margin-bottom:18px; display:block; }
   .pitch-item h3{ font-size:16px; margin-bottom:10px; font-weight:600; }
   .pitch-item p{ color:var(--muted); font-size:13.5px; line-height:1.6; }
 
@@ -235,6 +238,7 @@
   .tilt-inner{
     background:var(--glass); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid var(--line); border-top:2px solid transparent; padding:32px;
     height:100%;
+    position:relative;
     transform-style:preserve-3d;
     opacity:0;
     transform:rotateY(-65deg) translateZ(-40px);
@@ -245,6 +249,20 @@
   .project-card.tilt-ready .tilt-inner{ transition:transform .12s ease-out, border-color .3s ease; }
   .tilt-inner:hover{ border-top-color:var(--amber); border-color:var(--cyan); }
   .project-tag{ font-family:var(--mono); font-size:11px; color:var(--coral); letter-spacing:0.08em; margin-bottom:14px; }
+
+  .project-icon{ position:absolute; top:30px; right:30px; width:40px; height:40px; opacity:0.85; }
+  .icon-spin{ animation:iconSpin 6s linear infinite; transform-origin:center; }
+  @keyframes iconSpin{ to{ transform:rotate(360deg); } }
+  .icon-layers rect{ animation:layerPulse 2.4s ease-in-out infinite; }
+  .icon-layers rect:nth-child(2){ animation-delay:0.3s; }
+  .icon-layers rect:nth-child(3){ animation-delay:0.6s; }
+  @keyframes layerPulse{ 0%,100%{ opacity:0.3; } 50%{ opacity:1; } }
+  .icon-check{ stroke-dasharray:24; animation:checkDraw 3s ease-in-out infinite; }
+  @keyframes checkDraw{ 0%{ stroke-dashoffset:24; } 35%{ stroke-dashoffset:0; } 75%{ stroke-dashoffset:0; } 100%{ stroke-dashoffset:-24; } }
+  .icon-net line{ stroke-dasharray:6 4; animation:netFlow 1.6s linear infinite; }
+  @keyframes netFlow{ to{ stroke-dashoffset:-20; } }
+  .icon-orbit .orb{ animation:orbitSpin 5s linear infinite; transform-origin:20px 20px; }
+  @keyframes orbitSpin{ to{ transform:rotate(360deg); } }
 
   .project-flow{ position:relative; height:38px; margin-bottom:18px; }
   .flow-track{ position:absolute; top:14px; left:0; right:0; height:1px; background:var(--line); }
@@ -264,7 +282,7 @@
   .stack-list{ font-family:var(--mono); font-size:11.5px; letter-spacing:0.03em; color:var(--cyan); margin-bottom:20px; }
   .stack-list span{ margin-right:6px; }
   .stack-list span:not(:last-child)::after{ content:'·'; color:var(--muted); margin-left:6px; }
-  .project-link{ font-family:var(--mono); font-size:12px; color:var(--amber); text-decoration:none; border-bottom:1px dashed var(--amber); }
+  .project-link{ font-family:var(--sans); font-weight:600; font-size:13px; color:var(--violet); text-decoration:none; border-bottom:1px solid var(--violet); }
   .project-link.pending{ color:var(--muted); border-bottom:1px dashed var(--muted); cursor:default; }
 
   /* ---------- Featured AIOps card w/ 3D point-cloud visual ---------- */
@@ -283,7 +301,7 @@
   .contact h2{ justify-content:center; }
   .contact h2::after{ display:none; }
   .hire-btn{ font-size:16px; padding:16px 34px; margin-bottom:34px; }
-  .socials{ display:flex; gap:22px; justify-content:center; font-family:var(--mono); font-size:13px;}
+  .socials{ display:flex; gap:22px; justify-content:center; font-family:var(--sans); font-weight:500; font-size:14px;}
   .socials a{ color:var(--muted); text-decoration:none; }
   .socials a:hover{ color:var(--text); }
 
@@ -486,6 +504,12 @@
           <div class="flow-node" style="left:100%"><span>DOCKER HUB</span></div>
           <div class="flow-runner" style="animation-delay:0s"></div>
         </div>
+        <svg class="project-icon icon-spin" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 20a12 12 0 0 1 12-12c4 0 7.5 2 9.5 5" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M32 20a12 12 0 0 1-12 12c-4 0-7.5-2-9.5-5" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M27 7l2.5 6-6-1.5z" fill="var(--cyan)"/>
+          <path d="M13 33l-2.5-6 6 1.5z" fill="var(--cyan)"/>
+        </svg>
         <div class="project-tag">● PROJECT 01</div>
         <h3>CI/CD Pipeline with Docker &amp; GitHub Actions</h3>
         <p>A Flask app with a full CI/CD pipeline — every push runs automated tests, builds a Docker image, and pushes it to Docker Hub via GitHub Actions.</p>
@@ -504,6 +528,11 @@
           <div class="flow-node" style="left:100%"><span>EC2</span></div>
           <div class="flow-runner" style="animation-delay:0.6s"></div>
         </div>
+        <svg class="project-icon icon-layers" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="0" width="32" height="6" rx="1" fill="var(--amber)"/>
+          <rect x="4" y="9" width="32" height="6" rx="1" fill="var(--amber)"/>
+          <rect x="4" y="18" width="32" height="6" rx="1" fill="var(--amber)"/>
+        </svg>
         <div class="project-tag">● PROJECT 02</div>
         <h3>AWS Infrastructure as Code with Terraform</h3>
         <p>Provisions a VPC, public subnet, internet gateway, security group, and EC2 web server on AWS — fully automated with reusable Terraform modules.</p>
@@ -522,6 +551,10 @@
           <div class="flow-node" style="left:100%"><span>ARGOCD → K8S</span></div>
           <div class="flow-runner" style="animation-delay:1.2s"></div>
         </div>
+        <svg class="project-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 4l14 5v10c0 9-6 15-14 17C12 34 6 28 6 19V9l14-5z" stroke="var(--amber)" stroke-width="2"/>
+          <path class="icon-check" d="M13 20l5 5 9-11" stroke="var(--cyan)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
         <div class="project-tag">● PROJECT 03</div>
         <h3>DevSecOps Pipeline — Tic Tac Toe</h3>
         <p>A React/TypeScript game wrapped in a full DevSecOps pipeline: unit tests, SAST linting, Docker build, Trivy vulnerability scan, push to GHCR, and ArgoCD GitOps deployment to Kubernetes.</p>
@@ -540,6 +573,17 @@
           <div class="flow-node" style="left:100%"><span>EC2</span></div>
           <div class="flow-runner" style="animation-delay:1.8s"></div>
         </div>
+        <svg class="project-icon icon-net" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="8" y1="8" x2="20" y2="20" stroke="var(--cyan)" stroke-width="1.5"/>
+          <line x1="32" y1="8" x2="20" y2="20" stroke="var(--cyan)" stroke-width="1.5"/>
+          <line x1="8" y1="32" x2="20" y2="20" stroke="var(--cyan)" stroke-width="1.5"/>
+          <line x1="32" y1="32" x2="20" y2="20" stroke="var(--cyan)" stroke-width="1.5"/>
+          <circle cx="8" cy="8" r="3" fill="var(--amber)"/>
+          <circle cx="32" cy="8" r="3" fill="var(--amber)"/>
+          <circle cx="8" cy="32" r="3" fill="var(--amber)"/>
+          <circle cx="32" cy="32" r="3" fill="var(--amber)"/>
+          <circle cx="20" cy="20" r="3.5" fill="var(--cyan)"/>
+        </svg>
         <div class="project-tag">● PROJECT 04</div>
         <h3>VPC Infrastructure with Terraform &amp; GitHub Actions CI/CD</h3>
         <p>A modular Terraform build of a highly-available AWS VPC — multi-AZ subnets, security groups, and load-balanced EC2 instances — deployed through a GitHub Actions pipeline.</p>
@@ -558,6 +602,13 @@
           <div class="flow-node" style="left:100%"><span>PODS</span></div>
           <div class="flow-runner" style="animation-delay:2.4s"></div>
         </div>
+        <svg class="project-icon icon-orbit" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="4" fill="var(--amber)"/>
+          <circle cx="20" cy="20" r="14" stroke="var(--line-glow)" stroke-width="1"/>
+          <g class="orb"><circle cx="34" cy="20" r="2.5" fill="var(--cyan)"/></g>
+          <g class="orb" style="animation-delay:-1.7s"><circle cx="34" cy="20" r="2.5" fill="var(--cyan)"/></g>
+          <g class="orb" style="animation-delay:-3.4s"><circle cx="34" cy="20" r="2.5" fill="var(--cyan)"/></g>
+        </svg>
         <div class="project-tag">● PROJECT 05</div>
         <h3>EKS Cluster Deployment with Terraform &amp; Jenkins</h3>
         <p>Provisions a Jenkins server on EC2, then runs a Jenkins pipeline that drives Terraform to stand up a fully working Amazon EKS cluster — infra and CI tooling both defined as code, end to end.</p>
@@ -603,14 +654,14 @@
 
   /* ---- Theme toggle (light/dark), persisted via localStorage ---- */
   var themeToggle = document.getElementById('themeToggle');
-  function currentTheme(){ return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
-  function syncToggleIcon(){ if (themeToggle) themeToggle.textContent = currentTheme() === 'light' ? '☀️' : '🌙'; }
-  function syncSceneColors(){ if (skillsFogRef) skillsFogRef.color.setHex(currentTheme() === 'light' ? 0xF4F6FA : 0x0A0E1A); }
+  function currentTheme(){ return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
+  function syncToggleIcon(){ if (themeToggle) themeToggle.textContent = currentTheme() === 'dark' ? '☀️' : '🌙'; }
+  function syncSceneColors(){ if (skillsFogRef) skillsFogRef.color.setHex(currentTheme() === 'dark' ? 0x0A0A0C : 0xFFFFFF); }
   syncToggleIcon();
   if (themeToggle) {
     themeToggle.addEventListener('click', function(){
-      var next = currentTheme() === 'light' ? 'dark' : 'light';
-      if (next === 'light') { document.documentElement.setAttribute('data-theme', 'light'); }
+      var next = currentTheme() === 'dark' ? 'light' : 'dark';
+      if (next === 'dark') { document.documentElement.setAttribute('data-theme', 'dark'); }
       else { document.documentElement.removeAttribute('data-theme'); }
       try { localStorage.setItem('theme', next); } catch(e){}
       syncToggleIcon();
@@ -837,7 +888,7 @@
     renderer.setSize(width, height, false);
 
     var scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(document.documentElement.getAttribute('data-theme') === 'light' ? 0xF4F6FA : 0x0A0E1A, 6, 12.5);
+    scene.fog = new THREE.Fog(document.documentElement.getAttribute('data-theme') === 'dark' ? 0x0A0A0C : 0xFFFFFF, 6, 12.5);
     skillsFogRef = scene.fog;
     var camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
     camera.position.set(0, 0, 11.5);
@@ -848,15 +899,41 @@
     var n = skills.length;
     var R = 4.9;
     var goldenAngle = Math.PI * (3 - Math.sqrt(5));
+    var positions = [];
     for (var i = 0; i < n; i++){
       var y = 1 - (i / (n - 1)) * 2;
       var radiusAtY = Math.sqrt(Math.max(0, 1 - y * y));
       var theta = goldenAngle * i;
       var x = Math.cos(theta) * radiusAtY;
       var z = Math.sin(theta) * radiusAtY;
+      var pos = new THREE.Vector3(x * R, y * R, z * R);
+      positions.push(pos);
       var sprite = makeSkillSprite(skills[i]);
-      sprite.position.set(x * R, y * R, z * R);
+      sprite.position.copy(pos);
       group.add(sprite);
+
+      var node = new THREE.Mesh(
+        new THREE.SphereGeometry(0.045, 8, 8),
+        new THREE.MeshBasicMaterial({ color: 0x5B8DEF, transparent: true, opacity: 0.8 })
+      );
+      node.position.copy(pos);
+      group.add(node);
+    }
+
+    /* Network graph: connect each node to its 2 nearest neighbors */
+    var lineMat = new THREE.LineBasicMaterial({ color: 0x2563EB, transparent: true, opacity: 0.18 });
+    for (var a = 0; a < n; a++){
+      var dists = [];
+      for (var b = 0; b < n; b++){
+        if (a === b) continue;
+        dists.push({ idx: b, d: positions[a].distanceTo(positions[b]) });
+      }
+      dists.sort(function(p, q){ return p.d - q.d; });
+      for (var k = 0; k < 2; k++){
+        var neighbor = dists[k].idx;
+        var lineGeo = new THREE.BufferGeometry().setFromPoints([positions[a], positions[neighbor]]);
+        group.add(new THREE.Line(lineGeo, lineMat));
+      }
     }
 
     var mouseX = 0, mouseY = 0;
@@ -977,7 +1054,7 @@
     }
     var normalGeo = new THREE.BufferGeometry();
     normalGeo.setAttribute('position', new THREE.BufferAttribute(normalPos, 3));
-    var normalMat = new THREE.PointsMaterial({ color: 0x7FA8F0, size: 0.045, transparent: true, opacity: 0.85 });
+    var normalMat = new THREE.PointsMaterial({ color: 0x2563EB, size: 0.045, transparent: true, opacity: 0.85 });
     group.add(new THREE.Points(normalGeo, normalMat));
 
     /* anomaly points, sitting outside the healthy cluster */
@@ -1058,7 +1135,7 @@
 
     var count = 340;
     var positions = new Float32Array(count * 3);
-    var colorChoices = [0x5B8DEF, 0x7FA8F0, 0xB8C4D6];
+    var colorChoices = [0x2563EB, 0x1D4ED8, 0x64748B];
     var colors = new Float32Array(count * 3);
     var tmpColor = new THREE.Color();
     for (var i = 0; i < count; i++){
