@@ -565,8 +565,8 @@
     'GIT','GITHUB'
   ];
   function makeSkillSprite(text){
-    var fontPx = 30;
-    var padX = 22, padY = 14;
+    var fontPx = 22;
+    var padX = 16, padY = 9;
     var tmp = document.createElement('canvas').getContext('2d');
     tmp.font = fontPx + 'px "JetBrains Mono", monospace';
     var textW = tmp.measureText(text).width;
@@ -574,7 +574,7 @@
     canvas.width = Math.ceil(textW + padX * 2);
     canvas.height = fontPx + padY * 2;
     var ctx = canvas.getContext('2d');
-    var r = 10;
+    var r = 8;
     ctx.fillStyle = 'rgba(19,27,38,0.92)';
     ctx.strokeStyle = 'rgba(79,209,197,0.55)';
     ctx.lineWidth = 2;
@@ -594,9 +594,9 @@
     ctx.fillText(text, canvas.width/2, canvas.height/2 + 1);
     var texture = new THREE.CanvasTexture(canvas);
     texture.minFilter = THREE.LinearFilter;
-    var material = new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false });
+    var material = new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false, fog: true });
     var sprite = new THREE.Sprite(material);
-    var scale = 0.017;
+    var scale = 0.0095;
     sprite.scale.set(canvas.width * scale, canvas.height * scale, 1);
     return sprite;
   }
@@ -612,14 +612,15 @@
     renderer.setSize(width, height, false);
 
     var scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x0C121A, 6, 12.5);
     var camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
-    camera.position.set(0, 0, 8.5);
+    camera.position.set(0, 0, 11.5);
 
     var group = new THREE.Group();
     scene.add(group);
 
     var n = skills.length;
-    var R = 3.4;
+    var R = 4.9;
     var goldenAngle = Math.PI * (3 - Math.sqrt(5));
     for (var i = 0; i < n; i++){
       var y = 1 - (i / (n - 1)) * 2;
@@ -650,8 +651,8 @@
       if (visible) {
         if (!reduceMotion) {
           var dy = window.scrollY - lastScroll;
-          group.rotation.y += 0.0025 + mouseX * 0.002 + dy * 0.0006;
-          group.rotation.x += (mouseY * 0.25 - group.rotation.x) * 0.02;
+          group.rotation.y += 0.0045 + mouseX * 0.002 + dy * 0.0006;
+          group.rotation.x += 0.0016 + mouseY * 0.0012;
         }
         renderer.render(scene, camera);
       }
