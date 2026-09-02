@@ -313,8 +313,18 @@
   .socials{ display:flex; gap:22px; justify-content:center; font-family:var(--sans); font-weight:500; font-size:14px;}
   .socials a{ color:var(--muted); text-decoration:none; }
   .socials a:hover{ color:var(--text); }
-  .linkedin-badge-wrap{ display:flex; justify-content:center; align-items:center; margin:34px auto 30px; position:relative; z-index:2; }
+  .linkedin-badge-wrap{
+    display:flex; justify-content:center; align-items:center; margin:22px auto 0; position:relative; z-index:2;
+    padding:10px; border-radius:10px;
+    perspective:900px;
+    transform-style:preserve-3d;
+    transition:transform .15s ease-out;
+    will-change:transform;
+    box-shadow:0 0 0 1px var(--line-glow), 0 0 30px 4px rgba(37,99,235,0.18);
+  }
+  .linkedin-badge-wrap:hover{ box-shadow:0 0 0 1px var(--violet), 0 0 44px 8px rgba(37,99,235,0.3); }
   .linkedin-badge-wrap .badge-base__link.LI-simple-link{ display:none; }
+  @media (prefers-reduced-motion: reduce){ .linkedin-badge-wrap{ transform:none !important; } }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation:none !important; transition:none !important; }
@@ -378,6 +388,9 @@
             <div class="face bottom">MONITOR</div>
           </div>
         </div>
+      </div>
+      <div class="linkedin-badge-wrap" id="linkedinBadge">
+        <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="light" data-type="VERTICAL" data-vanity="abdur-raheman-s" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://in.linkedin.com/in/abdur-raheman-s?trk=profile-badge">Abdur Raheman S</a></div>
       </div>
     </div>
   </div>
@@ -652,9 +665,6 @@
   <p class="eyebrow">$ whoami --available-for-hire</p>
   <h2>Let's ship something</h2>
   <a class="btn hire-btn hire-link" href="https://mail.google.com/mail/?view=cm&fs=1&to=abdurraheman1198@gmail.com&su=Let%27s%20work%20together" target="_blank" rel="noopener">Hire Me →</a>
-  <div class="linkedin-badge-wrap">
-    <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="light" data-type="VERTICAL" data-vanity="abdur-raheman-s" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://in.linkedin.com/in/abdur-raheman-s?trk=profile-badge">Abdur Raheman S</a></div>
-  </div>
   <div class="socials">
     <a href="https://github.com/Abdur-S" target="_blank" rel="noopener">GitHub</a>
     <a href="https://in.linkedin.com/in/abdur-raheman-s" target="_blank" rel="noopener">LinkedIn</a>
@@ -772,6 +782,20 @@
   }
   document.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
+
+  /* ---- LinkedIn badge 3D tilt ---- */
+  var linkedinBadge = document.getElementById('linkedinBadge');
+  if (!reduceMotion && linkedinBadge) {
+    linkedinBadge.addEventListener('mousemove', function(e){
+      var r = linkedinBadge.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      linkedinBadge.style.transform = 'rotateY(' + (x*14) + 'deg) rotateX(' + (-y*14) + 'deg) translateZ(6px)';
+    });
+    linkedinBadge.addEventListener('mouseleave', function(){
+      linkedinBadge.style.transform = 'rotateY(0deg) rotateX(0deg) translateZ(0px)';
+    });
+  }
 
   /* ---- Pitch card 3D tilt ---- */
   if (!reduceMotion) {
