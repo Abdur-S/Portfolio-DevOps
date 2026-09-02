@@ -88,7 +88,7 @@
   /* ---------- Nav ---------- */
   nav{ position:fixed; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:22px 5vw; z-index:10; font-family:var(--sans); font-weight:600; font-size:13px; letter-spacing:0.03em; background:linear-gradient(180deg, var(--bg), transparent); backdrop-filter:blur(2px); transition:padding .3s ease, background .3s ease, border-color .3s ease, backdrop-filter .3s ease; border-bottom:1px solid transparent; }
   nav.scrolled{ padding:12px 5vw; background:var(--glass); backdrop-filter:blur(16px); border-bottom:1px solid var(--line); }
-  nav .logo{ color:var(--amber); font-weight:600; }
+  nav .logo{ color:var(--amber); font-weight:600; text-decoration:none; cursor:pointer; }
   nav .logo span{ color:var(--muted); }
   nav ul{ list-style:none; display:flex; gap:28px; }
   nav a{ color:var(--muted); text-decoration:none; transition:color .2s ease; position:relative; padding-bottom:4px; }
@@ -143,7 +143,7 @@
   }
   .hero-text h1{ font-family:var(--sans); font-size:clamp(40px, 6vw, 76px); font-weight:800; line-height:1.02; margin:6px 0 8px; letter-spacing:-0.02em; color:var(--text); }
   .hero-text .role{ color:var(--violet); font-family:var(--sans); font-weight:600; font-size:clamp(15px,2vw,18px); margin-bottom:14px; }
-  .status-badge{ display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12px; font-weight:600; color:#15803D; background:rgba(22,163,74,0.08); border:1px solid rgba(22,163,74,0.3); padding:6px 14px; border-radius:20px; margin-bottom:22px; letter-spacing:0.03em; }
+  .status-badge{ display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12px; font-weight:600; color:#15803D; background:rgba(22,163,74,0.08); border:1px solid rgba(22,163,74,0.3); padding:6px 14px; border-radius:20px; margin-bottom:12px; letter-spacing:0.03em; }
   html[data-theme="dark"] .status-badge{ color:#4ADE80; background:rgba(74,222,128,0.08); border-color:rgba(74,222,128,0.3); }
   .status-dot{ width:8px; height:8px; border-radius:50%; background:#22C55E; flex-shrink:0; animation:statusPulse 2s ease-in-out infinite; }
   @keyframes statusPulse{
@@ -178,7 +178,7 @@
 
   /* ---------- Hero 3D cube ---------- */
   .scene{ perspective:900px; height:340px; display:flex; align-items:center; justify-content:center; }
-  .cube-tilt{ width:160px; height:160px; transform-style:preserve-3d; transition:transform .15s ease-out; }
+  .cube-tilt{ width:160px; height:160px; transform-style:preserve-3d; transition:transform .08s ease-out; }
   .cube{ width:100%; height:100%; position:relative; transform-style:preserve-3d; animation:spin 18s linear infinite; }
   @keyframes spin{ from{ transform:rotateX(0deg) rotateY(0deg); } to{ transform:rotateX(360deg) rotateY(360deg); } }
   .face{ position:absolute; width:160px; height:160px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:13px; letter-spacing:0.12em; font-weight:600; background:rgba(17,24,39,0.85); border:1px solid var(--cyan); color:var(--cyan); box-shadow:inset 0 0 30px rgba(91,141,239,0.08); }
@@ -307,26 +307,20 @@
   .socials{ display:flex; gap:22px; justify-content:center; font-family:var(--sans); font-weight:500; font-size:14px;}
   .socials a{ color:var(--muted); text-decoration:none; }
   .socials a:hover{ color:var(--text); }
-  .linkedin-badge-wrap{
-    display:flex; justify-content:center; align-items:center; margin:22px auto 0; position:relative; z-index:2;
-    perspective:900px;
-    transform-style:preserve-3d;
-    transition:transform .15s ease-out;
-    will-change:transform;
+  .li-float{
+    position:fixed; right:22px; bottom:22px; z-index:9;
+    display:flex; align-items:center; gap:9px;
+    background:#FFFFFF; border-radius:24px; padding:8px 16px 8px 8px;
+    text-decoration:none;
+    box-shadow:0 0 0 1px var(--line-glow), 0 4px 22px rgba(37,99,235,0.2);
+    transition:box-shadow .3s ease, transform .12s ease-out;
+    perspective:600px; transform-style:preserve-3d; will-change:transform;
   }
-  @media (prefers-reduced-motion: reduce){ .linkedin-badge-wrap{ transform:none !important; } }
-
-  .li-card{ width:280px; background:#FFFFFF; border-radius:8px; overflow:hidden; box-shadow:0 0 0 1px var(--line-glow), 0 0 30px 4px rgba(37,99,235,0.18); transition:box-shadow .3s ease; }
-  .linkedin-badge-wrap:hover .li-card{ box-shadow:0 0 0 1px var(--violet), 0 0 44px 8px rgba(37,99,235,0.3); }
-  .li-card-head{ background:#EBE6DE; padding:12px 16px; }
-  .li-logo{ font-family:var(--sans); font-weight:800; font-size:17px; color:#0A66C2; }
-  .li-logo b{ background:#0A66C2; color:#fff; font-style:normal; padding:0 4px; border-radius:2px; margin-left:1px; }
-  .li-card-body{ padding:18px 18px 20px; }
-  .li-avatar{ width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg, var(--violet), #60A5FA); color:#fff; font-family:var(--sans); font-weight:700; font-size:18px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
-  .li-name{ font-family:var(--sans); font-weight:700; font-size:16px; color:#0A0A0A; margin-bottom:6px; }
-  .li-headline{ font-family:var(--sans); font-size:12.5px; color:#4A4A48; line-height:1.5; margin-bottom:16px; }
-  .li-view-btn{ display:inline-block; font-family:var(--sans); font-weight:600; font-size:13px; color:#0A66C2; border:1px solid #0A66C2; border-radius:16px; padding:6px 16px; text-decoration:none; transition:background .2s ease, color .2s ease; }
-  .li-view-btn:hover{ background:#0A66C2; color:#fff; }
+  .li-float:hover{ box-shadow:0 0 0 1px var(--violet), 0 6px 32px rgba(37,99,235,0.35); }
+  .li-float-icon{ width:26px; height:26px; border-radius:6px; background:#0A66C2; color:#fff; font-family:var(--sans); font-weight:800; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .li-float-text{ font-family:var(--sans); font-weight:600; font-size:13px; color:#0A0A0A; white-space:nowrap; }
+  @media (max-width:640px){ .li-float{ right:14px; bottom:14px; padding:8px; } .li-float-text{ display:none; } }
+  @media (prefers-reduced-motion: reduce){ .li-float{ transform:none !important; } }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation:none !important; transition:none !important; }
@@ -342,11 +336,15 @@
 <div class="spotlight" id="spotlight"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
+<a href="https://in.linkedin.com/in/abdur-raheman-s" target="_blank" rel="noopener" class="li-float" id="linkedinBadge">
+  <span class="li-float-icon">in</span>
+  <span class="li-float-text">Abdur Raheman S</span>
+</a>
 
 <div class="scroll-progress" id="scrollProgress"></div>
 
 <nav>
-  <div class="logo">Abdur Raheman S</div>
+  <a href="#" class="logo" id="logoHome">Abdur Raheman S</a>
   <div class="nav-right">
     <ul>
       <li><a href="#stack">Stack</a></li>
@@ -387,17 +385,6 @@
             <div class="face left">SECURE</div>
             <div class="face top">DEPLOY</div>
             <div class="face bottom">MONITOR</div>
-          </div>
-        </div>
-      </div>
-      <div class="linkedin-badge-wrap" id="linkedinBadge">
-        <div class="li-card">
-          <div class="li-card-head"><span class="li-logo">Linked<b>in</b></span></div>
-          <div class="li-card-body">
-            <div class="li-avatar">AR</div>
-            <div class="li-name">Abdur Raheman S</div>
-            <div class="li-headline">Junior DevOps Engineer | AWS · Terraform · Docker · Kubernetes · Jenkins · CI/CD | Immediate Joiner</div>
-            <a class="li-view-btn" href="https://in.linkedin.com/in/abdur-raheman-s" target="_blank" rel="noopener">View profile</a>
           </div>
         </div>
       </div>
@@ -682,6 +669,8 @@
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
 (function(){
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -763,9 +752,8 @@
     spotlight.style.display = 'none';
   }
 
-  /* ---- Scroll progress bar + hero recede + grid floor + navbar ---- */
+  /* ---- Scroll progress bar + grid floor + navbar ---- */
   var scrollProgress = document.getElementById('scrollProgress');
-  var heroInner = document.getElementById('heroInner');
   var gridFloor = document.getElementById('gridFloor');
   var navEl = document.querySelector('nav');
 
@@ -779,15 +767,39 @@
     if (navEl) { navEl.classList.toggle('scrolled', scrollTop > 40); }
 
     if(!reduceMotion){
-      var heroFade = Math.max(0, 1 - scrollTop / 600);
-      var depth = Math.min(scrollTop * 0.6, 400);
-      heroInner.style.opacity = heroFade;
-      heroInner.style.transform = 'translateZ(-' + depth + 'px) scale(' + (1 - Math.min(scrollTop/2200, 0.15)) + ')';
       gridFloor.style.backgroundPosition = '0px ' + (scrollTop * 0.5) + 'px';
     }
   }
   document.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
+
+  /* ---- GSAP ScrollTrigger: hero recede (smoother than manual scroll math) ---- */
+  if (!reduceMotion && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.to('.hero-text, .scene', {
+      opacity: 0,
+      z: -350,
+      scale: 0.9,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: 'header.hero',
+        start: 'top top',
+        end: '650px top',
+        scrub: 0.3
+      }
+    });
+    gsap.from('.pitch-item', {
+      opacity: 0,
+      y: 34,
+      duration: 0.7,
+      stagger: 0.12,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.pitch-grid',
+        start: 'top 82%'
+      }
+    });
+  }
 
   /* ---- LinkedIn badge 3D tilt ---- */
   var linkedinBadge = document.getElementById('linkedinBadge');
@@ -818,6 +830,15 @@
     });
   }
 
+  /* ---- Logo click: scroll to top ---- */
+  var logoHome = document.getElementById('logoHome');
+  if (logoHome) {
+    logoHome.addEventListener('click', function(e){
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  }
+
   /* ---- Nav active-section indicator ---- */
   var navLinks = document.querySelectorAll('nav ul a[href^="#"]');
   var navSections = [];
@@ -843,7 +864,7 @@
       var r = this.getBoundingClientRect();
       var x = (e.clientX - r.left) / r.width - 0.5;
       var y = (e.clientY - r.top) / r.height - 0.5;
-      cubeTilt.style.transform = 'rotateY(' + (x*30) + 'deg) rotateX(' + (-y*30) + 'deg)';
+      cubeTilt.style.transform = 'rotateY(' + (x*55) + 'deg) rotateX(' + (-y*55) + 'deg)';
     });
     document.querySelector('.hero-3d').addEventListener('mouseleave', function(){
       cubeTilt.style.transform = 'rotateY(0deg) rotateX(0deg)';
