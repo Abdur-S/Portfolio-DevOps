@@ -10,29 +10,13 @@
 (function(){
   try{
     var t = localStorage.getItem('theme');
-    if(!t){ t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
-    if(t === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
+    if(!t){ t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'; }
+    if(t === 'light'){ document.documentElement.setAttribute('data-theme','light'); }
   }catch(e){}
 })();
 </script>
 <style>
   :root{
-    --bg:#FFFFFF;
-    --bg-elev:#FAFAF9;
-    --bg-elev-2:#F0F0EE;
-    --glass:rgba(255,255,255,0.75);
-    --violet:#2563EB;
-    --amber:#6B6B68;
-    --cyan:#2563EB;
-    --coral:#C2410C;
-    --text:#111110;
-    --muted:#6B6B68;
-    --line:rgba(17,17,16,0.10);
-    --line-glow:rgba(37,99,235,0.22);
-    --mono:'JetBrains Mono', monospace;
-    --sans:'Inter', sans-serif;
-  }
-  html[data-theme="dark"]{
     --bg:#0A0A0C;
     --bg-elev:#141416;
     --bg-elev-2:#1C1C1F;
@@ -45,6 +29,22 @@
     --muted:#8C8A85;
     --line:rgba(240,239,236,0.08);
     --line-glow:rgba(91,141,239,0.22);
+    --mono:'JetBrains Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+  html[data-theme="light"]{
+    --bg:#FFFFFF;
+    --bg-elev:#FAFAF9;
+    --bg-elev-2:#F0F0EE;
+    --glass:rgba(255,255,255,0.75);
+    --violet:#2563EB;
+    --amber:#6B6B68;
+    --cyan:#2563EB;
+    --coral:#C2410C;
+    --text:#111110;
+    --muted:#6B6B68;
+    --line:rgba(17,17,16,0.10);
+    --line-glow:rgba(37,99,235,0.22);
   }
   body{ transition:background .35s ease, color .35s ease; }
   *{box-sizing:border-box; margin:0; padding:0;}
@@ -66,10 +66,10 @@
   #ambientCanvas{ position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
   .grain{ position:fixed; inset:0; z-index:0; opacity:0.035; pointer-events:none; mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-  .spotlight{ position:fixed; inset:0; z-index:3; pointer-events:none; mix-blend-mode:multiply; opacity:0.5;
-    background:radial-gradient(600px circle at var(--sx,50%) var(--sy,50%), rgba(37,99,235,0.06), transparent 60%); }
-  html[data-theme="dark"] .spotlight{ mix-blend-mode:screen;
+  .spotlight{ position:fixed; inset:0; z-index:3; pointer-events:none; mix-blend-mode:screen; opacity:0.5;
     background:radial-gradient(600px circle at var(--sx,50%) var(--sy,50%), rgba(91,141,239,0.14), transparent 60%); }
+  html[data-theme="light"] .spotlight{ mix-blend-mode:multiply;
+    background:radial-gradient(600px circle at var(--sx,50%) var(--sy,50%), rgba(37,99,235,0.06), transparent 60%); }
   @media (prefers-reduced-motion: reduce){ #ambientCanvas, .spotlight{ display:none; } }
 
   /* ---------- Custom cursor (desktop / fine-pointer only) ---------- */
@@ -143,8 +143,8 @@
   }
   .hero-text h1{ font-family:var(--sans); font-size:clamp(40px, 6vw, 76px); font-weight:800; line-height:1.02; margin:6px 0 8px; letter-spacing:-0.02em; color:var(--text); }
   .hero-text .role{ color:var(--violet); font-family:var(--sans); font-weight:600; font-size:clamp(15px,2vw,18px); margin-bottom:14px; }
-  .status-badge{ display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12px; font-weight:600; color:#15803D; background:rgba(22,163,74,0.08); border:1px solid rgba(22,163,74,0.3); padding:6px 14px; border-radius:20px; margin-bottom:12px; letter-spacing:0.03em; }
-  html[data-theme="dark"] .status-badge{ color:#4ADE80; background:rgba(74,222,128,0.08); border-color:rgba(74,222,128,0.3); }
+  .status-badge{ display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12px; font-weight:600; color:#4ADE80; background:rgba(74,222,128,0.08); border:1px solid rgba(74,222,128,0.3); padding:6px 14px; border-radius:20px; margin-bottom:12px; letter-spacing:0.03em; }
+  html[data-theme="light"] .status-badge{ color:#15803D; background:rgba(22,163,74,0.08); border-color:rgba(22,163,74,0.3); }
   .status-dot{ width:8px; height:8px; border-radius:50%; background:#22C55E; flex-shrink:0; animation:statusPulse 2s ease-in-out infinite; }
   @keyframes statusPulse{
     0%{ box-shadow:0 0 0 0 rgba(34,197,94,0.5); }
@@ -157,8 +157,8 @@
   .hero-cta{ display:flex; gap:14px; margin-bottom:36px; flex-wrap:wrap;}
   .btn, .btn-ghost{ font-family:var(--sans); font-weight:600; font-size:13px; padding:14px 26px; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase; transition:transform .2s ease, background .3s ease, border-color .2s ease, color .3s ease; display:inline-block; border:1px solid var(--violet); color:var(--violet); position:relative; overflow:hidden; }
   .btn{ background:transparent; font-weight:600; }
-  .btn:hover{ background:var(--violet); color:#FFFFFF; transform:translateY(-2px); }
-  html[data-theme="dark"] .btn:hover{ color:#0A0A0C; }
+  .btn:hover{ background:var(--violet); color:#0A0A0C; transform:translateY(-2px); }
+  html[data-theme="light"] .btn:hover{ color:#FFFFFF; }
   .btn-ghost{ border-color:var(--line); color:var(--text); }
   .btn-ghost:hover{ border-color:var(--cyan); color:var(--cyan); }
 
@@ -299,7 +299,8 @@
   @media (max-width:760px){ .featured-inner{ grid-template-columns:1fr; } .aiops-visual{ height:220px; } }
 
   /* ---------- Contact / footer ---------- */
-  .contact{ text-align:center; padding:160px 6vw 100px; }
+  .contact{ text-align:center; padding:90px 6vw 100px; }
+  @media (max-width:640px){ .contact{ padding:60px 6vw 70px; } }
   .contact .eyebrow{ justify-content:center; display:flex; }
   .contact h2{ justify-content:center; }
   .contact h2::after{ display:none; }
@@ -677,14 +678,14 @@
 
   /* ---- Theme toggle (light/dark), persisted via localStorage ---- */
   var themeToggle = document.getElementById('themeToggle');
-  function currentTheme(){ return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
-  function syncToggleIcon(){ if (themeToggle) themeToggle.textContent = currentTheme() === 'dark' ? '☀️' : '🌙'; }
-  function syncSceneColors(){ if (skillsFogRef) skillsFogRef.color.setHex(currentTheme() === 'dark' ? 0x0A0A0C : 0xFFFFFF); }
+  function currentTheme(){ return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
+  function syncToggleIcon(){ if (themeToggle) themeToggle.textContent = currentTheme() === 'light' ? '☀️' : '🌙'; }
+  function syncSceneColors(){ if (skillsFogRef) skillsFogRef.color.setHex(currentTheme() === 'light' ? 0xFFFFFF : 0x0A0A0C); }
   syncToggleIcon();
   if (themeToggle) {
     themeToggle.addEventListener('click', function(){
-      var next = currentTheme() === 'dark' ? 'light' : 'dark';
-      if (next === 'dark') { document.documentElement.setAttribute('data-theme', 'dark'); }
+      var next = currentTheme() === 'light' ? 'dark' : 'light';
+      if (next === 'light') { document.documentElement.setAttribute('data-theme', 'light'); }
       else { document.documentElement.removeAttribute('data-theme'); }
       try { localStorage.setItem('theme', next); } catch(e){}
       syncToggleIcon();
@@ -955,7 +956,7 @@
     renderer.setSize(width, height, false);
 
     var scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(document.documentElement.getAttribute('data-theme') === 'dark' ? 0x0A0A0C : 0xFFFFFF, 6, 12.5);
+    scene.fog = new THREE.Fog(document.documentElement.getAttribute('data-theme') === 'light' ? 0xFFFFFF : 0x0A0A0C, 6, 12.5);
     skillsFogRef = scene.fog;
     var camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
     camera.position.set(0, 0, 11.5);
@@ -988,7 +989,7 @@
     }
 
     /* Network graph: connect each node to its 2 nearest neighbors */
-    var lineMat = new THREE.LineBasicMaterial({ color: 0x2563EB, transparent: true, opacity: 0.18 });
+    var lineMat = new THREE.LineBasicMaterial({ color: 0x5B8DEF, transparent: true, opacity: 0.18 });
     for (var a = 0; a < n; a++){
       var dists = [];
       for (var b = 0; b < n; b++){
@@ -1121,7 +1122,7 @@
     }
     var normalGeo = new THREE.BufferGeometry();
     normalGeo.setAttribute('position', new THREE.BufferAttribute(normalPos, 3));
-    var normalMat = new THREE.PointsMaterial({ color: 0x2563EB, size: 0.045, transparent: true, opacity: 0.85 });
+    var normalMat = new THREE.PointsMaterial({ color: 0x5B8DEF, size: 0.045, transparent: true, opacity: 0.85 });
     group.add(new THREE.Points(normalGeo, normalMat));
 
     /* anomaly points, sitting outside the healthy cluster */
@@ -1202,7 +1203,7 @@
 
     var count = 340;
     var positions = new Float32Array(count * 3);
-    var colorChoices = [0x2563EB, 0x1D4ED8, 0x64748B];
+    var colorChoices = [0x5B8DEF, 0x7FA8F0, 0xB8C4D6];
     var colors = new Float32Array(count * 3);
     var tmpColor = new THREE.Color();
     for (var i = 0; i < count; i++){
