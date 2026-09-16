@@ -2,9 +2,8 @@
 
 ### AWS DEVOPS ENGINEER
 
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=Abdur-S&label=Profile views&color=0e75b6&style=flat" alt="Abdur-S" /> </p>
-
-- 🌱 I'm currently learning **AIOPS and MLOPS**
+- 🌱 I'm currently learning **- AIOps & MLOps Infrastructure
+- GenAI & RAG Applications**
 
 - 👨‍💻 All of my projects are available at **[https://abdur-s.github.io/Portfolio-DevOps/](https://abdur-s.github.io/Portfolio-DevOps/)**
 
