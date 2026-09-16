@@ -2,7 +2,7 @@
 
 ### AWS DEVOPS ENGINEER
 
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=Abdur-S&label=Profile views&color=0e75b6&style=flat" alt="Abdur-S" /> </p>
+<img src="https://visitor-badge.laobi.icu/badge?page_id=Abdur-S.Abdur-S" alt="Visitor Badge" />
 
 - 🌱 I'm currently learning **- AIOps & MLOps Infrastructure
 - GenAI & RAG Applications**
