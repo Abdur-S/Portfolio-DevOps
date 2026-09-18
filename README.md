@@ -61,23 +61,20 @@ Machine learning solution using Isolation Forest to detect anomalies in CPU, lat
 ## 🛠️ Tech Stack
 
 **Cloud & Infrastructure:**
-- AWS (EC2, VPC, S3, RDS, Lambda, EKS, IAM, CloudWatch)
+- **AWS:** EC2, S3, IAM, VPC, ALB, ELB, Auto Scaling, RDS, EBS, CloudWatch, Lambda, Route 53, EKS, ECR
 - Terraform, CloudFormation
 
-**Containerization & Orchestration:**
-- Docker, Kubernetes, Helm, ArgoCD
+**DevOps & CI/CD:**
+- Jenkins, GitHub Actions, Docker, Kubernetes, ArgoCD, Ansible, Helm
 
-**CI/CD & Automation:**
-- Jenkins, GitHub Actions, Ansible
+**Infrastructure as Code:**
+- Terraform, CloudFormation
 
-**Monitoring & Logging:**
-- Prometheus, Grafana, CloudWatch, ELK Stack
+**Security & Monitoring:**
+- Trivy, SAST, Dependency Scanning, CloudWatch, Prometheus, Grafana, Splunk
 
-**Programming & Scripting:**
-- Python, Bash, Linux
-
-**Security & Scanning:**
-- Trivy, SAST, Dependency Scanning
+**OS, Scripting & Version Control:**
+- Linux, Bash, Python, Git, GitHub
 
 ---
 
@@ -87,16 +84,23 @@ Machine learning solution using Isolation Forest to detect anomalies in CPU, lat
   <tr>
     <td align="center"><img src="https://skillicons.dev/icons?i=aws" alt="aws" width="50" height="50"/><br/>AWS</td>
     <td align="center"><img src="https://skillicons.dev/icons?i=docker" alt="docker" width="50" height="50"/><br/>Docker</td>
-    <td align="center"><img src="https://skillicons.dev/icons?i=kubernetes" alt="kubernetes" width="50" height="50"/><br/>K8s</td>
+    <td align="center"><img src="https://skillicons.dev/icons?i=kubernetes" alt="kubernetes" width="50" height="50"/><br/>Kubernetes</td>
     <td align="center"><img src="https://skillicons.dev/icons?i=terraform" alt="terraform" width="50" height="50"/><br/>Terraform</td>
     <td align="center"><img src="https://skillicons.dev/icons?i=jenkins" alt="jenkins" width="50" height="50"/><br/>Jenkins</td>
   </tr>
   <tr>
-    <td align="center"><img src="https://skillicons.dev/icons?i=linux" alt="linux" width="50" height="50"/><br/>Linux</td>
+    <td align="center"><img src="https://skillicons.dev/icons?i=github" alt="github" width="50" height="50"/><br/>GitHub Actions</td>
+    <td align="center"><img src="https://skillicons.dev/icons?i=prometheus" alt="prometheus" width="50" height="50"/><br/>Prometheus</td>
+    <td align="center"><img src="https://skillicons.dev/icons?i=grafana" alt="grafana" width="50" height="50"/><br/>Grafana</td>
+    <td align="center"><img src="https://skillicons.dev/icons?i=ansible" alt="ansible" width="50" height="50"/><br/>Ansible</td>
+    <td align="center"><img src="https://skillicons.dev/icons?i=go" alt="go" width="50" height="50"/><br/>Go</td>
+  </tr>
+  <tr>
     <td align="center"><img src="https://skillicons.dev/icons?i=python" alt="python" width="50" height="50"/><br/>Python</td>
     <td align="center"><img src="https://skillicons.dev/icons?i=bash" alt="bash" width="50" height="50"/><br/>Bash</td>
+    <td align="center"><img src="https://skillicons.dev/icons?i=linux" alt="linux" width="50" height="50"/><br/>Linux</td>
     <td align="center"><img src="https://skillicons.dev/icons?i=git" alt="git" width="50" height="50"/><br/>Git</td>
-    <td align="center"><img src="https://skillicons.dev/icons?i=grafana" alt="grafana" width="50" height="50"/><br/>Grafana</td>
+    <td align="center"><img src="https://skillicons.dev/icons?i=github" alt="github" width="50" height="50"/><br/>GitHub</td>
   </tr>
 </table>
 
@@ -113,15 +117,20 @@ Machine learning solution using Isolation Forest to detect anomalies in CPU, lat
 
 ## 💼 Career Goals
 
-Seeking **DevOps Engineer** internship/entry-level roles focused on:
+Seeking **DevOps Engineer** opportunities focused on:
 - Cloud infrastructure automation
 - Kubernetes & container orchestration
 - CI/CD pipeline design
 - Infrastructure as Code
 - DevOps best practices
 
-📍 **Based in:** Chennai, Tamil Nadu
-📧 **Available for:** Internships, Contract roles, Mentorship
+### 📍 Availability
+- 🎓 **Internship** - Open to internship opportunities
+- 💼 **Full-Time** - Available for permanent roles
+- 🌍 **Remote Work** - Open to remote/work-from-home positions
+- 🏢 **Location:** Chennai, Tamil Nadu (Open to relocate)
+
+**Status:** Available to start immediately
 
 ---
 
