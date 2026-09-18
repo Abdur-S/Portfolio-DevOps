@@ -1,4 +1,3 @@
-
 # 👋 Hi, I'm Abdur Raheman S
 
 **AWS DevOps Engineer | Cloud Infrastructure Enthusiast | Open Source Contributor**
@@ -151,10 +150,6 @@ Machine learning solution using Isolation Forest to automatically detect abnorma
   &nbsp;&nbsp;
   <a href="https://linkedin.com/in/abdur-raheman-s" target="_blank">
     <img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="Abdur Raheman S" height="40" width="40" />
-  </a>
-  &nbsp;&nbsp;
-  <a href="mailto:abdurraheman0572@gmail.com">
-    <img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/gmail.svg" alt="Email" height="40" width="40" />
   </a>
   &nbsp;&nbsp;
   <a href="https://abdur-s.github.io/Portfolio-DevOps/" target="_blank">
